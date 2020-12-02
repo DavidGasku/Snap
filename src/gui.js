@@ -78,7 +78,7 @@ Animation, BoxMorph, BlockEditorMorph, BlockDialogMorph, Note, ZERO, BLACK*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2020-November-21';
+modules.gui = '2020-December-01';
 
 // Declarations
 
@@ -2139,7 +2139,51 @@ IDE_Morph.prototype.droppedImage = function (aCanvas, name) {
 };
 
 IDE_Morph.prototype.droppedSVG = function (anImage, name) {
-    var costume = new SVG_Costume(anImage, name.split('.')[0]);
+    var myself,
+        viewBox, w, h,
+        svgNormalized,
+        headerLenght = anImage.src.search('base64') + 7,
+            // usually 26 from "data:image/svg+xml;base64,"
+        svgStrEncoded = anImage.src.substring(headerLenght),
+        svgObj = new DOMParser().parseFromString(
+            atob(svgStrEncoded), "image/svg+xml"
+        ).firstElementChild;
+
+    name = name.split('.')[0];
+
+    // check svg 'width' and 'height' attributes and set them if needed
+
+    if (svgObj.attributes.getNamedItem("width") &&
+            svgObj.attributes.getNamedItem("height")) {
+        this.loadSVG(anImage, name);
+    } else {
+        // setting HTMLImageElement default values
+        w = '300';
+        h = '150';
+        // changing default values if viewBox attribute is set
+        if (svgObj.attributes.getNamedItem("viewBox")) {
+            viewBox = svgObj.attributes.getNamedItem('viewBox').value;
+            viewBox = viewBox.split(/[ ,]/).filter(item => item);
+            if (viewBox.length == 4) {
+                w = Math.ceil(viewBox[2]);
+                h = Math.ceil(viewBox[3]);
+            }
+        }
+        svgNormalized = new Image(w, h);
+        svgObj.setAttribute('width', w);
+        svgObj.setAttribute('height', h);
+        svgNormalized.src = 'data:image/svg+xml;base64,' +
+            btoa(new XMLSerializer().serializeToString(svgObj));
+        myself = this;
+        svgNormalized.onload = function () {
+            myself.loadSVG(svgNormalized, name);
+        };
+    }
+};
+
+IDE_Morph.prototype.loadSVG = function (anImage, name) {
+    var costume = new SVG_Costume(anImage, name);
+
     this.currentSprite.addCostume(costume);
     this.currentSprite.wearCostume(costume);
     this.spriteBar.tabBar.tabTo('costumes');
@@ -4007,7 +4051,7 @@ IDE_Morph.prototype.aboutSnap = function () {
         module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
         world = this.world();
 
-    aboutTxt = 'Snap! 6.3.7 - dev -\nBuild Your Own Blocks\n\n'
+    aboutTxt = 'Snap! 6.4.0 - dev -\nBuild Your Own Blocks\n\n'
         + 'Copyright \u24B8 2008-2020 Jens M\u00F6nig and '
         + 'Brian Harvey\n'
         + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'

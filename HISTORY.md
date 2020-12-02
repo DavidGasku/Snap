@@ -2,6 +2,52 @@
 
 ## in development:
 
+* **New Features:**
+    * hyperdyadic MIN and MAX primitives reachable via "relabel"
+    * hyperdyadic less / great than or equals primitives reachable via "relabel"
+    * new SIGN function in arithmetic dropdown
+* **Notable Changes:**
+    * searching for blocks and keyboard entry now includes the contents of dropdown menus
+    * disabled dropping reporters into certain dropdowns (monadic functions, types, costume attributees, graphic effects, layers, audio attributes, pen attributes, dates, relation, keys, video attributes)
+    * changed VIDEOP _ ON _ reporter primitive to be hyper-monadic (second slot)
+* **Notable Fixes:**
+    * keep internal linked-list organization intact for hyperblocks
+    * improved SVG loading in Firefox, thanks, Joan!
+* **Translation Updates:**
+    * Spanish, thanks, Joan!
+    * Catalan, thanks, Joan!
+
+### 2020-12-02
+* threads, blocks: added SIGN function to monadic dropdown
+* Catalan translation update, thanks, Joan!
+
+### 2020-12-01
+* threads, objects: added hyperdyadic MIN and MAX primitives reachable via "relabel"
+* threads, objects: added hyperdyadic less/greaterThanOrEquals prims 
+* blocks: made monadic functions and data types menus static
+* blocks: made costume attribute, graphic effects and layers menus static
+* blocks: made audio attributes menu static
+* blocks: made pen attributes menus static
+* blocks: made sensing attributes menus largely static
+* threads: changed reportVideo() to be hyper-monadic
+* lists: made sure map() doesn't mutate internal list linked-ness
+
+### 2020-11-30
+* threads: keep internal linked-list organization intact for hyperblocks
+* update libraries
+
+### 2020-11-27
+* objects: extended block-search to include dropdown choices in primitives
+* byob, objects: extended block-search to include dropdown choices in custom blocks
+
+### 2020-11-26
+* blocks, objects: refactored input slot specs
+* blocks: refactored special input slot dop-down menus for search
+
+### 2020-11-23
+* new dev version
+
+## 6.3.7
 * **Notable Changes:**
     * added "loadProjectXML" method to the api
     * hyperized "atrribute OF sprite" reporter primitive in the sensing category
@@ -12,9 +58,16 @@
     * API update for "loadProjectXML"
 * **Notable Fixes:**
     * fixed display of inherited sprite-local variables
+* **Translation Updates:**
+    * Greek, thanks, HM100!
+
+### 2020-11-23
+* Greek translation update, thanks, HM100!
+* prepared patch
 
 ### 2020-11-22
 * objects: fixed display of inherited sprite-local variables
+* threads: make sure video capture is turned on before accessing it programmatically 
 
 ### 2020-11-21
 * new dev version

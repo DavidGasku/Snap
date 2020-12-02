@@ -84,7 +84,7 @@ BlockEditorMorph, BlockDialogMorph, PrototypeHatBlockMorph,  BooleanSlotMorph,
 localize, TableMorph, TableFrameMorph, normalizeCanvas, VectorPaintEditorMorph,
 AlignmentMorph, Process, WorldMap, copyCanvas, useBlurredShadows*/
 
-modules.objects = '2020-November-22';
+modules.objects = '2020-December-01';
 
 var SpriteMorph;
 var StageMorph;
@@ -1106,26 +1106,46 @@ SpriteMorph.prototype.initBlocks = function () {
             category: 'operators',
             spec: '%n mod %n'
         },
+        reportMin: {
+            type: 'reporter',
+            category: 'operators',
+            spec: '%n min %n'
+        },
+        reportMax: {
+            type: 'reporter',
+            category: 'operators',
+            spec: '%n max %n'
+        },
         reportRandom: {
             type: 'reporter',
             category: 'operators',
             spec: 'pick random %n to %n',
             defaults: [1, 10]
         },
-        reportLessThan: {
-            type: 'predicate',
-            category: 'operators',
-            spec: '%s < %s'
-        },
         reportEquals: {
             type: 'predicate',
             category: 'operators',
             spec: '%s = %s'
         },
+        reportLessThan: {
+            type: 'predicate',
+            category: 'operators',
+            spec: '%s < %s'
+        },
+        reportLessThanOrEquals: {
+            type: 'predicate',
+            category: 'operators',
+            spec: '%s \u2264 %s'
+        },
         reportGreaterThan: {
             type: 'predicate',
             category: 'operators',
             spec: '%s > %s'
+        },
+        reportGreaterThanOrEquals: {
+            type: 'predicate',
+            category: 'operators',
+            spec: '%s \u2265 %s'
         },
         reportAnd: {
             type: 'predicate',
@@ -1146,6 +1166,7 @@ SpriteMorph.prototype.initBlocks = function () {
             type: 'predicate',
             category: 'operators',
             spec: '%bool',
+            defaults: [true],
             alias: 'true boolean'
         },
         reportFalse: { // special case for keyboard entry and search
@@ -1628,20 +1649,31 @@ SpriteMorph.prototype.blockAlternatives = {
 
     // operators:
     reportSum: ['reportDifference', 'reportProduct', 'reportQuotient',
-        'reportPower', 'reportModulus'],
+        'reportPower', 'reportModulus', 'reportMin', 'reportMax'],
     reportDifference: ['reportSum', 'reportProduct', 'reportQuotient',
-        'reportPower', 'reportModulus'],
+        'reportPower', 'reportModulus', 'reportMin', 'reportMax'],
     reportProduct: ['reportDifference', 'reportSum', 'reportQuotient',
-        'reportPower', 'reportModulus'],
+        'reportPower', 'reportModulus', 'reportMin', 'reportMax'],
     reportQuotient: ['reportDifference', 'reportProduct', 'reportSum',
-        'reportPower', 'reportModulus'],
+        'reportPower', 'reportModulus', 'reportMin', 'reportMax'],
     reportPower: ['reportDifference', 'reportProduct', 'reportSum',
-        'reportQuotient', 'reportModulus'],
+        'reportQuotient', 'reportModulus', 'reportMin', 'reportMax'],
     reportModulus: ['reportDifference', 'reportProduct', 'reportSum',
-        'reportQuotient', 'reportPower'],
-    reportLessThan: ['reportEquals', 'reportGreaterThan'],
-    reportEquals: ['reportLessThan', 'reportGreaterThan'],
-    reportGreaterThan: ['reportEquals', 'reportLessThan'],
+        'reportQuotient', 'reportPower', 'reportMin', 'reportMax'],
+    reportMin: ['reportSum', 'reportDifference', 'reportProduct',
+        'reportQuotient', 'reportPower', 'reportModulus', 'reportMax'],
+    reportMax: ['reportSum', 'reportDifference', 'reportProduct',
+        'reportQuotient', 'reportPower', 'reportModulus', 'reportMin'],
+    reportLessThan: ['reportLessThanOrEquals', 'reportEquals',
+        'reportGreaterThan', 'reportGreaterThanOrEquals'],
+    reportEquals: ['reportLessThan', 'reportLessThanOrEquals',
+        'reportGreaterThan', 'reportGreaterThanOrEquals'],
+    reportGreaterThan: ['reportGreaterThanOrEquals', 'reportEquals',
+        'reportLessThan', 'reportLessThanOrEquals'],
+    reportLessThanOrEquals: ['reportLessThan', 'reportEquals',
+        'reportGreaterThan', 'reportGreaterThanOrEquals'],
+    reportGreaterThanOrEquals: ['reportGreaterThan', 'reportEquals',
+        'reportLessThan', 'reportLessThanOrEquals'],
     reportAnd: ['reportOr'],
     reportOr: ['reportAnd'],
 
@@ -3095,8 +3127,29 @@ SpriteMorph.prototype.blocksMatching = function (
 
     function labelOf(aBlockSpec) {
         var words = (BlockMorph.prototype.parseSpec(aBlockSpec)),
-            filtered = words.filter(each => each.indexOf('%') !== 0);
-        return filtered.join(' ');
+            filtered = words.filter(each =>
+                each.indexOf('%') !== 0 || each.length === 1
+            ),
+            slots = words.filter(each =>
+                each.length > 1 && each.indexOf('%') === 0
+            ).map(spec => menuOf(spec));
+        return filtered.join(' ') + ' ' + slots.join(' ');
+    }
+
+    function menuOf(aSlotSpec) {
+        var info = BlockMorph.prototype.labelParts[aSlotSpec] || {},
+            menu = info.menu;
+        if (!menu) {return ''; }
+        if (isString(menu)) {
+            menu = InputSlotMorph.prototype[menu](true);
+        }
+        return Object.values(menu).map(entry => {
+            if (isNil(entry)) {return ''; }
+            if (entry instanceof Array) {
+                return localize(entry[0]);
+            }
+            return entry.toString();
+        }).join(' ');
     }
 
     function fillDigits(anInt, totalDigits, fillChar) {
@@ -3106,7 +3159,7 @@ SpriteMorph.prototype.blocksMatching = function (
     }
 
     function relevance(aBlockLabel, aSearchString) {
-        var lbl = ' ' + aBlockLabel,
+        var lbl = ' ' + aBlockLabel.toLowerCase(),
             idx = lbl.indexOf(aSearchString),
             atWord;
         if (idx === -1) {return -1; }
@@ -3123,7 +3176,7 @@ SpriteMorph.prototype.blocksMatching = function (
 
     // variable getters
     varNames.forEach(vName => {
-        var rel = relevance(labelOf(vName.toLowerCase()), search);
+        var rel = relevance(vName, search);
         if (rel !== -1) {
             blocks.push([this.variableBlock(vName), rel + '1']);
         }
@@ -3132,8 +3185,11 @@ SpriteMorph.prototype.blocksMatching = function (
     [this.customBlocks, stage.globalBlocks].forEach(blocksList =>
         blocksList.forEach(definition => {
             if (contains(types, definition.type)) {
-                var spec = definition.localizedSpec().toLowerCase(),
-                    rel = relevance(labelOf(spec), search);
+                var spec = definition.localizedSpec(),
+                    rel = relevance(labelOf(
+                        spec) + ' ' + definition.menuSearchWords(),
+                        search
+                    );
                 if (rel !== -1) {
                     blocks.push([definition.templateInstance(), rel + '2']);
                 }
@@ -3146,7 +3202,7 @@ SpriteMorph.prototype.blocksMatching = function (
         if (!StageMorph.prototype.hiddenPrimitives[selector] &&
                 contains(types, blocksDict[selector].type)) {
             var block = blocksDict[selector],
-                spec = localize(block.alias || block.spec).toLowerCase(),
+                spec = localize(block.alias || block.spec),
                 rel = relevance(labelOf(spec), search);
             if (
                 (rel !== -1) &&
@@ -9085,6 +9141,7 @@ StageMorph.prototype.freshPalette = SpriteMorph.prototype.freshPalette;
 StageMorph.prototype.blocksMatching = SpriteMorph.prototype.blocksMatching;
 StageMorph.prototype.searchBlocks = SpriteMorph.prototype.searchBlocks;
 StageMorph.prototype.reporterize = SpriteMorph.prototype.reporterize;
+StageMorph.prototype.variableBlock = SpriteMorph.prototype.variableBlock;
 StageMorph.prototype.showingWatcher = SpriteMorph.prototype.showingWatcher;
 StageMorph.prototype.addVariable = SpriteMorph.prototype.addVariable;
 StageMorph.prototype.deleteVariable = SpriteMorph.prototype.deleteVariable;

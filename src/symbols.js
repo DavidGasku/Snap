@@ -1684,17 +1684,22 @@ SymbolMorph.prototype.renderSymbolArrowUpThin = function (ctx, color) {
     // draw a thin up arrow
     var w = this.symbolWidth(),
         h = this.size,
-        n = w / 3,
+        n = 3,//w / 3,
         l = Math.max(w / 20, 0.5);
 
     ctx.strokeStyle = color.toString();
+    ctx.fillStyle = color.toString();
     ctx.lineWidth = l * 2;
+    ctx.translate(0.5, 0.5);
+
     ctx.beginPath();
     ctx.moveTo(w - n, n);
-    ctx.lineTo(w / 2, l * 2);
+    ctx.lineTo(w / 2, 0);
     ctx.lineTo(n, n);
-    ctx.moveTo(w / 2, l * 2);
-    ctx.lineTo(w / 2, h - l);
+    ctx.closePath();
+    ctx.fill();
+    ctx.moveTo(w / 2, 0);
+    ctx.lineTo(w / 2, h);
     ctx.stroke();
 };
 
@@ -1706,14 +1711,19 @@ SymbolMorph.prototype.renderSymbolArrowUpDownThin = function (ctx, color) {
         l = Math.max(w / 20, 0.5);
 
     ctx.strokeStyle = color.toString();
+    ctx.fillStyle = color.toString();
     ctx.lineWidth = l * 2;
+    ctx.translate(0.5, 0.5);
+
     ctx.beginPath();
     ctx.moveTo(w - n, n);
     ctx.lineTo(w / 2, l * 2);
     ctx.lineTo(n, n);
+    ctx.closePath();
     ctx.moveTo(w - n, h - n);
     ctx.lineTo(w / 2, h - l * 2);
     ctx.lineTo(n, h - n);
+    ctx.closePath();
     ctx.moveTo(w / 2, l * 2);
     ctx.lineTo(w / 2, h - l * 2);
     ctx.stroke();
@@ -2124,22 +2134,24 @@ SymbolMorph.prototype.renderSymbolFootprints = function (ctx, color) {
 SymbolMorph.prototype.renderSymbolKeyboard = function (ctx, color) {
     // draw a typing keyboard
     var h = this.size,
-        u = h / 10,
-        k = h / 5,
+        u = h / 12,
+        k = h / 6,
         row, col;
 
     ctx.fillStyle = color.toString();
+    ctx.translate(0.25, 0);
+    
     for (row = 0; row < 2; row += 1) {
-		for (col = 0; col < 5; col += 1) {
-			ctx.fillRect(
-      			((u + k) * col) + u,
-          		((u + k) * row) + u,
-           		k,
-           		k
-			);
-   		}
-  	}
-	ctx.fillRect(u * 4, u * 7, k * 4, k);
+        for (col = 0; col < 5; col += 1) {
+            ctx.fillRect(
+                ((u + k) * col) + u,
+                ((u + k) * row) + u,
+                k,
+                k
+                );
+            }
+        }
+    ctx.fillRect(u * 4, u * 7, k * 4, k);
 };
 
 SymbolMorph.prototype.renderSymbolKeyboardFilled = function (ctx, color) {

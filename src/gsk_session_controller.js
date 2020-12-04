@@ -18,10 +18,3 @@ GSK.session_controller.init = function (ide) {
 GSK.setTopBarVisibility = function (bool) {
     if (gsk_DEBUG) console.log("setTopBarVisibility()");
 }
-
-GSK.socket = io("http://localhost:3000", {
-    'reconnection': true,
-    'reconnectionDelay': 2000,
-    'reconnectionDelayMax': 5000,
-    /* 'reconnectionAttempts': 6, */
-});

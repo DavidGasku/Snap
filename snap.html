@@ -29,23 +29,39 @@
         <script src="src/api.js?version=2020-11-21"></script>
         <script src="src/sha512.js?version=2019-06-27"></script>
         <script src="src/FileSaver.min.js?version=2019-06-27"></script>
+        <!-- <script src="pixi.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.5/pixi.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pixi-viewport@4.18.1/dist/viewport.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/GreyRook/pixi-svg-graphics/dist/pixi-svg-graphics.min.js"></script> -->
+
+        <!-- <svg id="svg1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle r="50" cx="50" cy="50" fill="#F00" />
+        </svg> -->
 
         <script>
+
             var world, ide;
             window.onload = function () {
+                //pixi.init();
+
                 world = new WorldMorph(document.getElementById('world'));
                 ide = new IDE_Morph();
                 ide.openIn(world);
-                //GSK.session_controller.init(ide);
-                loop();
+                GSK.session_controller.init(ide);
+                loop();    
 			};
             function loop() {
                 requestAnimationFrame(loop);
                 world.doOneCycle();
+                //pixi.render();
             }
         </script>
     </head>
     <body style="margin: 0;">
-        <canvas id="world" tabindex="1" style="position: absolute;"></canvas>
+        <!-- <div id="pixi-canvas" style="z-index:1; position: absolute; top: 29px; right:0;"></div> -->
+        
+        <div class="snap-canvas">
+            <canvas id="world" tabindex="1" style="z-index:0; position: absolute;"></canvas>
+        </div>
     </body>
 </html>

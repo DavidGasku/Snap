@@ -11865,7 +11865,7 @@ WorldMorph.prototype.fullDrawOn = function (aContext, aRect) {
 };
 
 WorldMorph.prototype.updateBroken = function () {
-    //var ctx = this.worldCanvas.getContext('2d', {alpha: true});
+    var ctx = this.worldCanvas.getContext('2d');
     this.condenseDamages();
     this.broken.forEach(rect => {
         if (rect.extent().gt(ZERO)) {

@@ -13,23 +13,44 @@ GSK.init = function(broadcast) {
     ide.stage.toggleVisibility();
     ide.stageHandle.toggleVisibility();
 
-    SyntaxElementMorph.prototype.fontSize = 12;
-    CommandBlockMorph.prototype.corner = 6;
+    //SyntaxElementMorph.prototype.fontSize = 12;
+    //CommandBlockMorph.prototype.corner = 6;
 
     window.onbeforeunload = nop;
     return GSK;
 }
 
-GSK.onPublishReceived = function (d, s) {
-    console.log(d, s);
+GSK.onPublishReceived = function (data) {
+    console.log(data);
 
-    let sprite = ide.sprites.contents.find(s => s.name === d.o);
+    let sprite = ide.sprites.contents.find(s => s.name === data.sprite);
     if (sprite) {
-        sprite.gotoXY(d.x, d.y);
-        sprite.setHeading( d.heading );
+        script = ide.gskRawOpenScriptString(data.script);
+        //console.log(script2)
+        ide.stage.threads.startProcess(script, sprite)
     }
 }
 
 GSK.setTopBarVisibility = function (bool) {
     if (gsk_DEBUG) console.log("setTopBarVisibility()");
 }
+
+
+IDE_Morph.prototype.gskRawOpenScriptString = function (str) {
+    var xml,
+        script,
+        scripts = this.currentSprite.scripts;
+
+    if (Process.prototype.isCatchingErrors) {
+        try {
+            xml = this.serializer.parse(str, this.currentSprite);
+            script = this.serializer.loadScript(xml, this.currentSprite);
+        } catch (err) {
+            this.showMessage('Load failed: ' + err);
+        }
+    } else {
+        xml = this.serializer.loadScript(str, this.currentSprite);
+        script = this.serializer.loadScript(xml, this.currentSprite);
+    }
+    return script;
+};

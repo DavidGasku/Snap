@@ -2039,6 +2039,7 @@ SpriteMorph.prototype.render = function (ctx) {
     if (this.costume && !isLoadingCostume) {
         pic = isFlipped ? this.costume.flipped() : this.costume;
         ctx.save();
+        ctx.imageSmoothingEnabled = false;
         ctx.scale(this.scale * stageScale, this.scale * stageScale);
         ctx.translate(this.imageOffset.x, this.imageOffset.y);
         ctx.rotate(radians(facing - 90));
@@ -7694,6 +7695,7 @@ StageMorph.prototype.render = function (ctx) {
     ctx.fillStyle = this.color.toString();
     ctx.fillRect(0, 0, this.width(), this.height());
     if (this.costume) {
+        ctx.imageSmoothingEnabled = false;
         ctx.scale(this.scale, this.scale);
         ctx.drawImage(
             this.costume.contents,
@@ -7732,6 +7734,7 @@ StageMorph.prototype.drawOn = function (ctx, rect) {
     hs = h / this.scale;
 
     ctx.save();
+    ctx.imageSmoothingEnabled = false;
     ctx.scale(this.scale, this.scale);
 
     // projection layer (e.g. webcam)

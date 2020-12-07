@@ -1781,6 +1781,8 @@ SpriteMorph.prototype.init = function (globals) {
     this.heading = 90;
     this.fixLayout();
     this.rerender();
+
+    this.layerId=5;
 };
 
 // SpriteMorph duplicating (fullCopy)
@@ -7703,6 +7705,10 @@ StageMorph.prototype.render = function (ctx) {
     ctx.restore();
     this.version = Date.now(); // for observer optimization
 };
+
+StageMorph.prototype.sortByLayer = function () {
+    this.children = this.children.sort((a,b) => {return (b.layerId - a.layerId)});
+}
 
 StageMorph.prototype.drawOn = function (ctx, rect) {
     // draw pen trails and webcam layers

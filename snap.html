@@ -45,11 +45,9 @@
             var world, ide;
             window.onload = function () {
                 //pixi.init();
-
                 world = new WorldMorph(document.getElementById('world'));
                 ide = new IDE_Morph();
                 ide.openIn(world);
-                GSK.init(ide);
                 loop();    
 			};
             function loop() {

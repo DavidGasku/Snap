@@ -109,7 +109,7 @@ IDE_Morph.uber = Morph.prototype;
 // IDE_Morph preferences settings and skins
 
 IDE_Morph.prototype.setDefaultDesign = function () {
-    MorphicPreferences.isFlat = false;
+    MorphicPreferences.isFlat = true;
     SpriteMorph.prototype.paletteColor = new Color(30, 30, 30);
     SpriteMorph.prototype.paletteTextColor = new Color(230, 230, 230);
     StageMorph.prototype.paletteTextColor
@@ -262,7 +262,7 @@ IDE_Morph.prototype.init = function (isAutoFill) {
     this.hasChangedMedia = false;
 
     this.isAnimating = true;
-    this.paletteWidth = 200; // initially same as logo width
+    this.paletteWidth = GSK.gui.palette.width || 200; // initially same as logo width
     this.stageRatio = 1; // for IDE animations, e.g. when zooming
 
 	this.wasSingleStepping = false; // for toggling to and from app mode
@@ -750,12 +750,12 @@ IDE_Morph.prototype.createLogo = function () {
 
     this.logo.color = BLACK;
     this.logo.setExtent(new Point(200, 28)); // dimensions are fixed
-    this.add(this.logo);
+    if (GSK.gui.controlBar.show == "normal") this.add(this.logo);
 };
 
 IDE_Morph.prototype.createControlBar = function () {
     // assumes the logo has already been created
-    var padding = 5,
+    var padding = GSK.gui.controlBar.show == "reduced" ? GSK.gui.controlBar.padding : 5,
         button,
         slider,
         stopButton,
@@ -790,7 +790,7 @@ IDE_Morph.prototype.createControlBar = function () {
         this.world().fillPage();
     };
 
-    this.add(this.controlBar);
+    if (GSK.gui.controlBar.show != "none") this.add(this.controlBar);
 
     //smallStageButton
     button = new ToggleButtonMorph(
@@ -1016,7 +1016,7 @@ IDE_Morph.prototype.createControlBar = function () {
     // button.hint = 'open, save, & annotate project';
     button.fixLayout();
     projectButton = button;
-    this.controlBar.add(projectButton);
+    if ( GSK.gui.controlBar.show == "normal") this.controlBar.add(projectButton);
     this.controlBar.projectButton = projectButton; // for menu positioning
 
     // settingsButton
@@ -1069,7 +1069,7 @@ IDE_Morph.prototype.createControlBar = function () {
     button.fixLayout();
     button.refresh();
     cloudButton = button;
-    this.controlBar.add(cloudButton);
+    if (GSK.gui.controlBar.show == "normal") this.controlBar.add(cloudButton);
     this.controlBar.cloudButton = cloudButton; // for menu positioning & refresh
 
     this.controlBar.fixLayout = function () {
@@ -1087,24 +1087,35 @@ IDE_Morph.prototype.createControlBar = function () {
             myself.right() - StageMorph.prototype.dimensions.x *
                 (myself.isSmallStage ? myself.stageRatio : 1)
         );
-        [stageSizeButton, appModeButton].forEach(button => {
+
+        if ( GSK.gui.controlBar.show == "normal") {
+            [stageSizeButton, appModeButton].forEach(button => {
+                    x += padding;
+                    button.setCenter(myself.controlBar.center());
+                    button.setLeft(x);
+                    x += button.width();
+                }
+            );
+    
+            slider.setCenter(myself.controlBar.center());
+            slider.setRight(stageSizeButton.left() - padding);
+    
+            steppingButton.setCenter(myself.controlBar.center());
+            steppingButton.setRight(slider.left() - padding);
+    
+            settingsButton.setCenter(myself.controlBar.center());
+            settingsButton.setLeft(this.left());
+    
+            projectButton.setCenter(myself.controlBar.center());
+        }
+        else {
+            [settingsButton, stageSizeButton, appModeButton, slider, steppingButton, ].forEach(button => {
                 x += padding;
                 button.setCenter(myself.controlBar.center());
                 button.setLeft(x);
                 x += button.width();
-            }
-        );
-
-        slider.setCenter(myself.controlBar.center());
-        slider.setRight(stageSizeButton.left() - padding);
-
-        steppingButton.setCenter(myself.controlBar.center());
-        steppingButton.setRight(slider.left() - padding);
-
-        settingsButton.setCenter(myself.controlBar.center());
-        settingsButton.setLeft(this.left());
-
-        projectButton.setCenter(myself.controlBar.center());
+            });
+        }
 
         if (myself.cloud.disabled) {
             cloudButton.hide();
@@ -1187,7 +1198,7 @@ IDE_Morph.prototype.createControlBar = function () {
         );
         this.label.setCenter(this.center());
         this.label.setLeft(this.settingsButton.right() + padding);
-        this.add(this.label);
+        if ( GSK.gui.controlBar.show == "normal") this.add(this.label);
     };
 };
 
@@ -1281,7 +1292,7 @@ IDE_Morph.prototype.createCategories = function () {
         }
     });
     fixCategoriesLayout();
-    this.add(this.categories);
+    if (GSK.gui.categories.show) this.add(this.categories);
 };
 
 IDE_Morph.prototype.createPalette = function (forSearching) {
@@ -1356,7 +1367,7 @@ IDE_Morph.prototype.createPalette = function (forSearching) {
     };
 
     this.palette.setWidth(this.logo.width());
-    this.add(this.palette);
+    if (GSK.gui.palette.show) this.add(this.palette);
     return this.palette;
 };
 
@@ -1364,7 +1375,7 @@ IDE_Morph.prototype.createPaletteHandle = function () {
     // assumes that the palette has already been created
     if (this.paletteHandle) {this.paletteHandle.destroy(); }
     this.paletteHandle = new PaletteHandleMorph(this.categories);
-    this.add(this.paletteHandle);
+    if (GSK.gui.paletteHandle) this.add(this.paletteHandle);
 };
 
 IDE_Morph.prototype.createStage = function () {
@@ -1388,7 +1399,7 @@ IDE_Morph.prototype.createStageHandle = function () {
     // assumes that the stage has already been created
     if (this.stageHandle) {this.stageHandle.destroy(); }
     this.stageHandle = new StageHandleMorph(this.stage);
-    this.add(this.stageHandle);
+    if (GSK.gui.stageHandle) this.add(this.stageHandle);
 };
 
 IDE_Morph.prototype.createSpriteBar = function () {
@@ -1416,7 +1427,7 @@ IDE_Morph.prototype.createSpriteBar = function () {
 
     this.spriteBar = new Morph();
     this.spriteBar.color = this.frameColor;
-    this.add(this.spriteBar);
+    if (GSK.gui.spriteBar.show) this.add(this.spriteBar);
 
     function addRotationStyleButton(rotationStyle) {
         var colors = myself.rotationStyleColors,
@@ -1723,7 +1734,9 @@ IDE_Morph.prototype.createCorralBar = function () {
     this.corralBar = new Morph();
     this.corralBar.color = this.frameColor;
     this.corralBar.setHeight(this.logo.height()); // height is fixed
-    this.add(this.corralBar);
+
+    if (GSK.gui.showCorralBar) this.add(this.corralBar);
+    else this.corralBar.setHeight(0);
 
     // new sprite button
     newbutton = new PushButtonMorph(
@@ -1745,7 +1758,8 @@ IDE_Morph.prototype.createCorralBar = function () {
     newbutton.fixLayout();
     newbutton.setCenter(this.corralBar.center());
     newbutton.setLeft(this.corralBar.left() + padding);
-    this.corralBar.add(newbutton);
+    if (GSK.gui.addNewSpriteButton) this.corralBar.add(newbutton);
+    else newbutton.setWidth(0);
 
     paintbutton = new PushButtonMorph(
         this,
@@ -1920,21 +1934,11 @@ IDE_Morph.prototype.fixLayout = function (situation) {
         flag,
         maxPaletteWidth;
 
-    if (situation !== 'refreshPalette') {
-        // controlBar
-        this.controlBar.setPosition(this.logo.topRight());
-        this.controlBar.setWidth(this.right() - this.controlBar.left());
-        this.controlBar.fixLayout();
-
-        // categories
-        this.categories.setLeft(this.logo.left());
-        this.categories.setTop(this.logo.bottom());
-        this.categories.setWidth(this.paletteWidth);
-    }
-
     // palette
-    this.palette.setLeft(this.logo.left());
-    this.palette.setTop(this.categories.bottom());
+    this.palette.setLeft(this.left());
+    if (GSK.gui.categories.show) this.palette.setTop(this.categories.bottom());
+    else if (GSK.gui.controlBar.show == "normal") this.palette.setTop(this.logo.bottom());
+    else this.palette.setTop(this.top());
     this.palette.setHeight(this.bottom() - this.palette.top());
     this.palette.setWidth(this.paletteWidth);
 
@@ -1984,25 +1988,69 @@ IDE_Morph.prototype.fixLayout = function (situation) {
             this.paletteHandle.fixLayout();
         }
 
+
+        // controlBar
+        if (GSK.gui.controlBar.show == "normal") {
+            this.controlBar.setPosition(this.logo.topRight());
+            this.controlBar.setWidth(this.right() - this.controlBar.left());
+            this.controlBar.fixLayout();
+        }
+        else {
+            this.controlBar.setRight(this.right());
+            this.controlBar.setTop(this.top());
+                        //falla porque stage no esta definido??
+            this.controlBar.setWidth(this.right() - this.stage.left());
+            this.controlBar.fixLayout();
+        }
+
+        // categories
+        if (GSK.gui.controlBar.show == "normal") {
+            this.categories.setLeft(this.logo.left());
+            this.categories.setTop(this.logo.bottom());
+            this.categories.setWidth(this.paletteWidth);
+        } else {
+            this.categories.setLeft(this.left());
+            this.categories.setTop(this.top());
+            this.categories.setWidth(this.paletteWidth);
+        }
+
         // spriteBar
-        this.spriteBar.setLeft(this.paletteWidth + padding);
-        this.spriteBar.setTop(this.logo.bottom() + padding);
-        this.spriteBar.setExtent(new Point(
-            Math.max(0, this.stage.left() - padding - this.spriteBar.left()),
-            this.categories.bottom() - this.spriteBar.top() - padding - 8
-        ));
-        this.spriteBar.fixLayout();
+        if (GSK.gui.controlBar.show == "normal") {
+            this.spriteBar.setLeft(this.paletteWidth + padding);
+            this.spriteBar.setTop(this.logo.bottom() + padding);
+            this.spriteBar.setExtent(new Point(
+                Math.max(0, this.stage.left() - padding - this.spriteBar.left()),
+                this.categories.bottom() - this.spriteBar.top() - padding - 8
+            ));
+            this.spriteBar.fixLayout();
+        }
+        else if (GSK.gui.spriteBar.show) {
+            this.spriteBar.setLeft(this.paletteWidth + padding);
+            this.spriteBar.setTop(this.top());
+            this.spriteBar.setExtent(new Point(
+                Math.max(0, this.stage.left() - padding - this.spriteBar.left()),
+                this.categories.bottom() - this.spriteBar.top() - padding - 8
+            ));
+            this.spriteBar.fixLayout();
+        }
 
         // spriteEditor
         if (this.spriteEditor.isVisible) {
-            this.spriteEditor.setPosition(new Point(
-                this.spriteBar.left(),
-                this.spriteBar.bottom() + padding
-            ));
-            this.spriteEditor.setExtent(new Point(
-                this.spriteBar.width(),
-                this.bottom() - this.spriteEditor.top()
-            ));
+            if (GSK.gui.spriteBar.show) {
+                this.spriteEditor.setPosition(new Point(
+                    this.spriteBar.left(),
+                    this.spriteBar.bottom() + padding));
+                this.spriteEditor.setExtent(new Point(
+                    this.spriteBar.width(),
+                    this.bottom() - this.spriteEditor.top()
+                ));
+            }
+            else {
+                this.spriteEditor.setLeft(this.palette.right() + padding);
+                this.spriteEditor.setTop(this.top());
+                this.spriteEditor.setWidth(this.stage.left() - this.spriteEditor.left() - padding);
+                this.spriteEditor.setHeight(this.height());
+            }
         }
 
         // corralBar
@@ -9766,7 +9814,7 @@ StageHandleMorph.prototype.fixLayout = function () {
     var ide = this.target.parentThatIsA(IDE_Morph);
     this.setTop(this.target.top() + 10);
     this.setRight(this.target.left());
-    if (ide) {ide.add(this); } // come to front
+    if (ide && GSK.gui.stageHandle) {ide.add(this); } // come to front
 };
 
 // StageHandleMorph stepping:

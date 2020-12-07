@@ -1,6 +1,29 @@
 const gsk_DEBUG = true;
 
-GSK = {};
+GSK = {
+    gui: {
+        flatDesign: true,
+        stageHandle: false,
+        paletteHandle: false, 
+        categories: {
+            show: true,
+            mergeCategories: true,    
+        },
+        palette: {
+            show: true,
+            width: 220,
+        },
+        controlBar: {
+            show: "reduced", // none, reduced, normal
+            padding: 0,
+        },
+        spriteBar: {
+            show: false
+        },
+        showCorralBar: true,
+        addNewSpriteButton: false,
+    }
+};
 
 GSK.init = function(broadcast) {
     if (gsk_DEBUG) console.log("gks_session.init()");
@@ -8,10 +31,10 @@ GSK.init = function(broadcast) {
     GSK.ide = window.world.children[0];
     GSK.broadcast = broadcast;
 
-    ide.flatDesign();
-    ide.palette.toggleVisibility();
-    ide.stage.toggleVisibility();
-    ide.stageHandle.toggleVisibility();
+    // ide.flatDesign();
+    // ide.palette.toggleVisibility();
+    // ide.stage.toggleVisibility();
+    // ide.stageHandle.toggleVisibility();
 
     //SyntaxElementMorph.prototype.fontSize = 12;
     //CommandBlockMorph.prototype.corner = 6;

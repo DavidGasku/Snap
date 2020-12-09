@@ -1781,6 +1781,8 @@ SpriteMorph.prototype.init = function (globals) {
     this.heading = 90;
     this.fixLayout();
     this.rerender();
+
+    this.layerId=5;
 };
 
 // SpriteMorph duplicating (fullCopy)
@@ -2037,6 +2039,7 @@ SpriteMorph.prototype.render = function (ctx) {
     if (this.costume && !isLoadingCostume) {
         pic = isFlipped ? this.costume.flipped() : this.costume;
         ctx.save();
+        ctx.imageSmoothingEnabled = false;
         ctx.scale(this.scale * stageScale, this.scale * stageScale);
         ctx.translate(this.imageOffset.x, this.imageOffset.y);
         ctx.rotate(radians(facing - 90));
@@ -7695,6 +7698,7 @@ StageMorph.prototype.render = function (ctx) {
     ctx.fillStyle = this.color.toString();
     ctx.fillRect(0, 0, this.width(), this.height());
     if (this.costume) {
+        ctx.imageSmoothingEnabled = false;
         ctx.scale(this.scale, this.scale);
         ctx.drawImage(
             this.costume.contents,
@@ -7706,6 +7710,10 @@ StageMorph.prototype.render = function (ctx) {
     ctx.restore();
     this.version = Date.now(); // for observer optimization
 };
+
+StageMorph.prototype.sortByLayer = function () {
+    this.children = this.children.sort((a,b) => {return (b.layerId - a.layerId)});
+}
 
 StageMorph.prototype.drawOn = function (ctx, rect) {
     // draw pen trails and webcam layers
@@ -7729,6 +7737,7 @@ StageMorph.prototype.drawOn = function (ctx, rect) {
     hs = h / this.scale;
 
     ctx.save();
+    ctx.imageSmoothingEnabled = false;
     ctx.scale(this.scale, this.scale);
 
     // projection layer (e.g. webcam)

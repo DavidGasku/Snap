@@ -5,8 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Snap! 6.4.0 - dev - Build Your Own Blocks</title>
         <link rel="icon" href="src/favicon.ico">
-        
-        <!-- gsk scripts -->
+
         <script src="src/morphic.js?version=2020-11-12"></script>
         <script src="src/symbols.js?version=2020-10-07"></script>
         <script src="src/widgets.js?version=2020-10-06"></script>
@@ -29,6 +28,7 @@
         <script src="src/sha512.js?version=2019-06-27"></script>
         <script src="src/FileSaver.min.js?version=2019-06-27"></script>
 
+        <!-- gsk scripts -->
         <script src="src/gsk_session_controller.js"></script>
         
         <!-- <script src="pixi.js"></script>
@@ -45,11 +45,9 @@
             var world, ide;
             window.onload = function () {
                 //pixi.init();
-
                 world = new WorldMorph(document.getElementById('world'));
                 ide = new IDE_Morph();
                 ide.openIn(world);
-                GSK.init(ide);
                 loop();    
 			};
             function loop() {

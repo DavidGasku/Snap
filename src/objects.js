@@ -86,20 +86,20 @@ AlignmentMorph, Process, WorldMap, copyCanvas, useBlurredShadows*/
 
 modules.objects = '2020-December-01';
 
-var SpriteMorph;
-var StageMorph;
-var SpriteBubbleMorph;
-var Costume;
-var SVG_Costume;
-var CostumeEditorMorph;
-var Sound;
-var Note;
-var Microphone;
-var CellMorph;
-var WatcherMorph;
-var StagePrompterMorph;
-var Note;
-var SpriteHighlightMorph;
+// var SpriteMorph;
+// var StageMorph;
+// var SpriteBubbleMorph;
+// var Costume;
+// var SVG_Costume;
+// var CostumeEditorMorph;
+// var Sound;
+// var Note;
+// var Microphone;
+// var CellMorph;
+// var WatcherMorph;
+// var StagePrompterMorph;
+// var Note;
+// var SpriteHighlightMorph;
 
 function isSnapObject(thing) {
     return thing instanceof SpriteMorph || (thing instanceof StageMorph);

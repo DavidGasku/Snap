@@ -160,35 +160,35 @@ CustomCommandBlockMorph, SymbolMorph, ToggleButtonMorph, DialMorph*/
 
 modules.blocks = '2020-December-02';
 
-var SyntaxElementMorph;
-var BlockMorph;
-var BlockLabelMorph;
-var BlockSymbolMorph;
-var CommandBlockMorph;
-var ReporterBlockMorph;
-var ScriptsMorph;
-var ArgMorph;
-var CommandSlotMorph;
-var CSlotMorph;
-var InputSlotMorph;
-var InputSlotStringMorph;
-var InputSlotTextMorph;
-var BooleanSlotMorph;
-var ArrowMorph;
-var ColorSlotMorph;
-var HatBlockMorph;
-var BlockHighlightMorph;
-var MultiArgMorph;
-var TemplateSlotMorph;
-var FunctionSlotMorph;
-var ReporterSlotMorph;
-var RingMorph;
-var RingCommandSlotMorph;
-var RingReporterSlotMorph;
-var CommentMorph;
-var ArgLabelMorph;
-var TextSlotMorph;
-var ScriptFocusMorph;
+// var SyntaxElementMorph;
+// var BlockMorph;
+// var BlockLabelMorph;
+// var BlockSymbolMorph;
+// var CommandBlockMorph;
+// var ReporterBlockMorph;
+// var ScriptsMorph;
+// var ArgMorph;
+// var CommandSlotMorph;
+// var CSlotMorph;
+// var InputSlotMorph;
+// var InputSlotStringMorph;
+// var InputSlotTextMorph;
+// var BooleanSlotMorph;
+// var ArrowMorph;
+// var ColorSlotMorph;
+// var HatBlockMorph;
+// var BlockHighlightMorph;
+// var MultiArgMorph;
+// var TemplateSlotMorph;
+// var FunctionSlotMorph;
+// var ReporterSlotMorph;
+// var RingMorph;
+// var RingCommandSlotMorph;
+// var RingReporterSlotMorph;
+// var CommentMorph;
+// var ArgLabelMorph;
+// var TextSlotMorph;
+// var ScriptFocusMorph;
 
 // SyntaxElementMorph //////////////////////////////////////////////////
 

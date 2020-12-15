@@ -1857,7 +1857,7 @@ IDE_Morph.prototype.createCorral = function () {
     frame.alpha = 0;
 
     this.sprites.asArray().forEach(morph => {
-        if (!morph.isTemporary) {
+        if (!morph.isTemporary && !morph.isHidden) {
             frame.contents.add(new SpriteIconMorph(morph));
         }
     });

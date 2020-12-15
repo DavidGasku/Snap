@@ -218,11 +218,12 @@ ThreadManager.prototype.startProcess = function (
         newProc;
     if (active) {
         if (isThreadSafe) {
-            return active;
+            //return active;
+        } else {
+            active.stop();
+            active.canBroadcast = true; // broadcasts to fire despite reentrancy
+            this.removeTerminatedProcesses();
         }
-        active.stop();
-        active.canBroadcast = true; // broadcasts to fire despite reentrancy
-        this.removeTerminatedProcesses();
     }
     newProc = new Process(top, receiver, callback, isClicked);
     newProc.exportResult = exportResult;

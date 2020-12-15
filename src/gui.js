@@ -109,7 +109,7 @@ IDE_Morph.uber = Morph.prototype;
 // IDE_Morph preferences settings and skins
 
 IDE_Morph.prototype.setDefaultDesign = function () {
-    MorphicPreferences.isFlat = true;
+    MorphicPreferences.isFlat = false;
     SpriteMorph.prototype.paletteColor = new Color(30, 30, 30);
     SpriteMorph.prototype.paletteTextColor = new Color(230, 230, 230);
     StageMorph.prototype.paletteTextColor
@@ -204,7 +204,7 @@ IDE_Morph.prototype.scriptsTexture = function () {
     return pic;
 };
 
-IDE_Morph.prototype.setDefaultDesign();
+IDE_Morph.prototype.setFlatDesign();
 
 // IDE_Morph instance creation:
 

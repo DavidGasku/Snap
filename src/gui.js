@@ -1429,66 +1429,16 @@ IDE_Morph.prototype.createSpriteBar = function () {
     this.spriteBar.color = this.frameColor;
     if (GSK.gui.spriteBar.show) this.add(this.spriteBar);
 
-    function addRotationStyleButton(rotationStyle) {
-        var colors = myself.rotationStyleColors,
-            button;
-
-        button = new ToggleButtonMorph(
-            colors,
-            myself, // the IDE is the target
-            () => {
-                if (myself.currentSprite instanceof SpriteMorph) {
-                    myself.currentSprite.rotationStyle = rotationStyle;
-                    myself.currentSprite.changed();
-                    myself.currentSprite.fixLayout();
-                    myself.currentSprite.rerender();
-                }
-                rotationStyleButtons.forEach(each =>
-                    each.refresh()
-                );
-            },
-            symbols[rotationStyle], // label
-            () => myself.currentSprite instanceof SpriteMorph // query
-                && myself.currentSprite.rotationStyle === rotationStyle,
-            null, // environment
-            localize(labels[rotationStyle])
-        );
-
-        button.corner = 8;
-        button.labelMinExtent = new Point(11, 11);
-        button.padding = 0;
-        button.labelShadowOffset = new Point(-1, -1);
-        button.labelShadowColor = colors[1];
-        button.labelColor = myself.buttonLabelColor;
-        button.fixLayout();
-        button.refresh();
-        rotationStyleButtons.push(button);
-        button.setPosition(myself.spriteBar.position().add(new Point(2, 4)));
-        button.setTop(button.top()
-            + ((rotationStyleButtons.length - 1) * (button.height() + 2))
-            );
-        myself.spriteBar.add(button);
-        if (myself.currentSprite instanceof StageMorph) {
-            button.hide();
-        }
-        return button;
-    }
-
-    addRotationStyleButton(1);
-    addRotationStyleButton(2);
-    addRotationStyleButton(0);
-    this.rotationStyleButtons = rotationStyleButtons;
-
     thumbnail = new Morph();
     thumbnail.isCachingImage = true;
     thumbnail.bounds.setExtent(thumbSize);
     thumbnail.cachedImage = this.currentSprite.thumbnail(thumbSize);
     thumbnail.setPosition(
-        rotationStyleButtons[0].topRight().add(new Point(5, 3))
+        myself.spriteBar.position().add(new Point(5, 0))
     );
     this.spriteBar.add(thumbnail);
 
-    thumbnail.fps = 3;
+    thumbnail.fps = 5;
 
     thumbnail.step = function () {
         if (thumbnail.version !== myself.currentSprite.version) {
@@ -1504,7 +1454,7 @@ IDE_Morph.prototype.createSpriteBar = function () {
     nameField = new InputFieldMorph(this.currentSprite.name);
     nameField.setWidth(100); // fixed dimensions
     nameField.contrast = 90;
-    nameField.setPosition(thumbnail.topRight().add(new Point(10, 3)));
+    nameField.setPosition(thumbnail.topRight().add(new Point(0, 10)));
     this.spriteBar.add(nameField);
     this.spriteBar.nameField = nameField;
     nameField.fixLayout();
@@ -1539,12 +1489,62 @@ IDE_Morph.prototype.createSpriteBar = function () {
     padlock.tick.isBold = false;
     padlock.tick.fixLayout();
 
-    padlock.setPosition(nameField.bottomLeft().add(2));
+    padlock.setPosition(nameField.topRight().add(new Point(10, 3)));
     padlock.fixLayout();
     this.spriteBar.add(padlock);
     if (this.currentSprite instanceof StageMorph) {
         padlock.hide();
     }
+
+    function addRotationStyleButton(rotationStyle) {
+        var colors = myself.rotationStyleColors,
+            button;
+
+        button = new ToggleButtonMorph(
+            colors,
+            myself, // the IDE is the target
+            () => {
+                if (myself.currentSprite instanceof SpriteMorph) {
+                    myself.currentSprite.rotationStyle = rotationStyle;
+                    myself.currentSprite.changed();
+                    myself.currentSprite.fixLayout();
+                    myself.currentSprite.rerender();
+                }
+                rotationStyleButtons.forEach(each =>
+                    each.refresh()
+                );
+            },
+            symbols[rotationStyle], // label
+            () => myself.currentSprite instanceof SpriteMorph // query
+                && myself.currentSprite.rotationStyle === rotationStyle,
+            null, // environment
+            localize(labels[rotationStyle])
+        );
+
+        button.corner = 8;
+        button.labelMinExtent = new Point(11, 11);
+        button.padding = 0;
+        button.labelShadowOffset = new Point(-1, -1);
+        button.labelShadowColor = colors[1];
+        button.labelColor = myself.buttonLabelColor;
+        button.fixLayout();
+        button.refresh();
+        rotationStyleButtons.push(button);
+        button.setPosition(padlock.topRight().add(new Point(80, 0)));
+        button.setLeft(button.left()
+            + ((rotationStyleButtons.length - 1) * (button.width() + 2))
+            );
+        myself.spriteBar.add(button);
+        if (myself.currentSprite instanceof StageMorph) {
+            button.hide();
+        }
+        return button;
+    }
+
+    addRotationStyleButton(1);
+    addRotationStyleButton(2);
+    addRotationStyleButton(0);
+    this.rotationStyleButtons = rotationStyleButtons;
 
     // tab bar
     tabBar.tabTo = function (tabString) {

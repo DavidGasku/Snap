@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Snap! 6.4.0 - dev - Build Your Own Blocks</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300">
         <link rel="icon" href="src/favicon.ico">
 
         <script src="src/morphic.js?version=2020-11-12"></script>
@@ -50,6 +53,7 @@
                 ide.openIn(world);
                 loop();    
 			};
+
             function loop() {
                 requestAnimationFrame(loop);
                 world.doOneCycle();
@@ -57,11 +61,14 @@
             }
         </script>
     </head>
+
     <body style="margin: 0;">
+    <p style="font-family: Roboto">loading...</p>
         <!-- <div id="pixi-canvas" style="z-index:1; position: absolute; top: 29px; right:0;"></div> -->
         
         <div class="snap-canvas">
             <canvas id="world" tabindex="1" style="z-index:0; position: absolute;"></canvas>
         </div>
     </body>
+    
 </html>

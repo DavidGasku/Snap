@@ -110,7 +110,7 @@ PushButtonMorph.uber = TriggerMorph.prototype;
 
 // PushButtonMorph preferences settings:
 
-PushButtonMorph.prototype.fontSize = 10;
+PushButtonMorph.prototype.fontSize = 14;
 PushButtonMorph.prototype.fontStyle = 'sans-serif';
 PushButtonMorph.prototype.labelColor = BLACK;
 PushButtonMorph.prototype.labelShadowColor = WHITE;

@@ -214,7 +214,7 @@ function IDE_Morph(isAutoFill) {
 
 IDE_Morph.prototype.init = function (isAutoFill) {
     // global font setting
-    MorphicPreferences.globalFontFamily = 'Helvetica, Arial';
+    MorphicPreferences.globalFontFamily = 'Roboto';
 
     // restore saved user preferences
     this.userLanguage = null; // user language preference for startup

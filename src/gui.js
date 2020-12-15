@@ -109,7 +109,7 @@ IDE_Morph.uber = Morph.prototype;
 // IDE_Morph preferences settings and skins
 
 IDE_Morph.prototype.setDefaultDesign = function () {
-    MorphicPreferences.isFlat = true;
+    MorphicPreferences.isFlat = false;
     SpriteMorph.prototype.paletteColor = new Color(30, 30, 30);
     SpriteMorph.prototype.paletteTextColor = new Color(230, 230, 230);
     StageMorph.prototype.paletteTextColor
@@ -204,7 +204,7 @@ IDE_Morph.prototype.scriptsTexture = function () {
     return pic;
 };
 
-IDE_Morph.prototype.setDefaultDesign();
+IDE_Morph.prototype.setFlatDesign();
 
 // IDE_Morph instance creation:
 
@@ -214,7 +214,7 @@ function IDE_Morph(isAutoFill) {
 
 IDE_Morph.prototype.init = function (isAutoFill) {
     // global font setting
-    MorphicPreferences.globalFontFamily = 'Helvetica, Arial';
+    MorphicPreferences.globalFontFamily = 'Roboto';
 
     // restore saved user preferences
     this.userLanguage = null; // user language preference for startup
@@ -1857,7 +1857,7 @@ IDE_Morph.prototype.createCorral = function () {
     frame.alpha = 0;
 
     this.sprites.asArray().forEach(morph => {
-        if (!morph.isTemporary) {
+        if (!morph.isTemporary && !morph.isHidden) {
             frame.contents.add(new SpriteIconMorph(morph));
         }
     });

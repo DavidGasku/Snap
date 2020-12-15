@@ -1798,6 +1798,7 @@ SpriteMorph.prototype.toXML = function (serializer) {
 
     return serializer.format(
         '<sprite name="@" idx="@" x="@" y="@"' +
+            //(this.isHidden ? ' isHidden="true"' : '') +
             ' heading="@"' +
             ' scale="@"' +
             ' volume="@"' +
@@ -1821,6 +1822,7 @@ SpriteMorph.prototype.toXML = function (serializer) {
         idx,
         this.xPosition(),
         this.yPosition(),
+        //this.isHidden,
         this.heading,
         this.scale,
         this.volume,

@@ -14,11 +14,11 @@ GSK = {
             width: 220,
         },
         controlBar: {
-            show: "reduced", // none, reduced, normal
+            show: "normal", // none, reduced, normal
             padding: 0,
         },
         spriteBar: {
-            show: false
+            show: true
         },
         showCorralBar: true,
         addNewSpriteButton: false,

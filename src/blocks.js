@@ -275,7 +275,7 @@ SyntaxElementMorph.prototype.setScale = function (num) {
     this.cSlotPadding = 4 * scale;
     this.typeInPadding = scale;
     this.labelPadding = 4 * scale;
-    this.labelFontName = 'Verdana';
+    this.labelFontName = 'Roboto';
     this.labelFontStyle = 'sans-serif';
     this.fontSize = 10 * scale;
     this.embossing = new Point(
@@ -9384,7 +9384,7 @@ InputSlotMorph.prototype.objectsMenu = function (searching, includeMyself) {
     }
     dict[stage.name] = stage.name;
     stage.children.forEach(morph => {
-        if (morph instanceof SpriteMorph && !morph.isTemporary) {
+        if (morph instanceof SpriteMorph && !morph.isTemporary && !morph.isHidden) {
             allNames.push(morph.name);
         }
     });

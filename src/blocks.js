@@ -275,9 +275,9 @@ SyntaxElementMorph.prototype.setScale = function (num) {
     this.cSlotPadding = 4 * scale;
     this.typeInPadding = scale;
     this.labelPadding = 4 * scale;
-    this.labelFontName = 'Verdana';
+    this.labelFontName = 'Roboto';
     this.labelFontStyle = 'sans-serif';
-    this.fontSize = 10 * scale;
+    this.fontSize = 12 * scale;
     this.embossing = new Point(
         -1 * Math.max(scale / 2, 1),
         -1 * Math.max(scale / 2, 1)

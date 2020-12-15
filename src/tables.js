@@ -833,7 +833,7 @@ TableMorph.prototype.update = function () {
 TableMorph.prototype.rowLabelsWidth = function () {
     var ctx = StringMorph.prototype.measureCtx;
     ctx.font = 'italic ' + SyntaxElementMorph.prototype.fontSize +
-        'px Helvetica, Arial, sans-serif';
+        'px Roboto, Arial, sans-serif';
     return Math.max(
         0,
         Math.max.apply(

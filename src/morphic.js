@@ -1298,7 +1298,7 @@ var standardSettings = {
     globalFontFamily: '',
     menuFontName: 'sans-serif',
     menuFontSize: 12,
-    bubbleHelpFontSize: 10,
+    bubbleHelpFontSize: 12,
     prompterFontName: 'sans-serif',
     prompterFontSize: 12,
     prompterSliderSize: 10,

@@ -214,16 +214,18 @@ modules.api = '2020-November-21';
     global variables
 */
 
-window.onmessage = function (event) {
+window.onmessage = function(event) {
     // make the API accessible from outside an iframe
-    var ide = world.children[0];
-    window.top.postMessage(
-        {
-            selector: event.data.selector,
-            response: ide[event.data.selector].apply(ide, event.data.params)
-        },
-        '*'
-    );
+
+    // gsk disabled bc of warnings
+    // var ide = world.children[0];
+    // window.top.postMessage(
+    //     {
+    //         selector: event.data.selector,
+    //         response: ide[event.data.selector].apply(ide, event.data.params)
+    //     },
+    //     '*'
+    // );
 };
 
 IDE_Morph.prototype.broadcast = function(message, callback) {
@@ -241,7 +243,7 @@ IDE_Morph.prototype.broadcast = function(message, callback) {
             return;
         }
         if (callback instanceof Function) {
-            myself.onNextStep = function () {
+            myself.onNextStep = function() {
                 callback();
                 callback = null;
             };
@@ -271,14 +273,14 @@ IDE_Morph.prototype.broadcast = function(message, callback) {
     );
 };
 
-IDE_Morph.prototype.addMessageListenerForAll = function (callback) {
+IDE_Morph.prototype.addMessageListenerForAll = function(callback) {
     // associate a monadic callback with all broadcasts.
     // whenever a message is broadcast the callback is called
     // with the current message as argument
     this.addMessageListener('', callback);
 };
 
-IDE_Morph.prototype.addMessageListener = function (message, callback) {
+IDE_Morph.prototype.addMessageListener = function(message, callback) {
     // associate a callback function with a broadcast message,
     // whenever the message is broadcast, the callback is executed,
     // you can add multiple callbacks to a message, they will be
@@ -297,7 +299,7 @@ IDE_Morph.prototype.addMessageListener = function (message, callback) {
     }
 };
 
-IDE_Morph.prototype.getMessages = function () {
+IDE_Morph.prototype.getMessages = function() {
     // return an array of all broadcast messages in the current project
     var allNames = [],
         dict = new Map();
@@ -308,34 +310,34 @@ IDE_Morph.prototype.getMessages = function () {
     return Array.from(dict.keys());
 };
 
-IDE_Morph.prototype.getVarNames = function () {
+IDE_Morph.prototype.getVarNames = function() {
     // return an array of all global variable names
     return this.stage.globalVariables().names();
 };
 
-IDE_Morph.prototype.getVar = function (name) {
+IDE_Morph.prototype.getVar = function(name) {
     // return the value of the global variable indicated by name
     // raise an error if no global variable of that name exists
     return this.stage.globalVariables().getVar(name);
 };
 
-IDE_Morph.prototype.setVar = function (name, value) {
+IDE_Morph.prototype.setVar = function(name, value) {
     // set the value of the global variable indicated by name to the given value
     // raise an error if no global variable of that name exists
     this.stage.globalVariables().setVar(name, value);
 };
 
-IDE_Morph.prototype.newList = function (array) {
+IDE_Morph.prototype.newList = function(array) {
     // return a new Snap list the shape of the given array, if any
     // nested array will not be automatically converted to nested lists
     return new List(array);
 };
 
-IDE_Morph.prototype.getProjectXML = function () {
+IDE_Morph.prototype.getProjectXML = function() {
     return this.serializer.serialize(this.stage);
 };
 
-IDE_Morph.prototype.loadProjectXML = function (projectXML) {
+IDE_Morph.prototype.loadProjectXML = function(projectXML) {
     // load the project encoded as xml-String, no questions asked
     // terminate animations and scheduled ops
     this.onNextStep = null;

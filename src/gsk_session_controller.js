@@ -4,10 +4,10 @@ GSK = {
     gui: {
         flatDesign: true,
         stageHandle: false,
-        paletteHandle: false, 
+        paletteHandle: false,
         categories: {
             show: true,
-            mergeCategories: true,    
+            mergeCategories: true,
         },
         palette: {
             show: true,
@@ -33,8 +33,8 @@ GSK.init = function(broadcast) {
     return GSK;
 }
 
-GSK.onPublishReceived = function (data) {
-    console.log(data);
+GSK.onPublishReceived = function(data) {
+    //console.log(data);
 
     let sprite = ide.sprites.contents.find(s => s.name === data.sprite);
     if (sprite) {
@@ -44,12 +44,12 @@ GSK.onPublishReceived = function (data) {
     }
 }
 
-GSK.setTopBarVisibility = function (bool) {
+GSK.setTopBarVisibility = function(bool) {
     if (gsk_DEBUG) console.log("setTopBarVisibility()");
 }
 
 
-IDE_Morph.prototype.gskRawOpenScriptString = function (str) {
+IDE_Morph.prototype.gskRawOpenScriptString = function(str) {
     var xml,
         script,
         scripts = this.currentSprite.scripts;

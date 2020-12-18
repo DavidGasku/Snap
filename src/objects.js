@@ -5904,7 +5904,7 @@ SpriteMorph.prototype.allHatBlocksFor = function (message) {
             if (morph.selector === 'receiveMessage') {
                 event = morph.inputs()[0].evaluate();
                 if (morph.inputs()[0] instanceof ReporterBlockMorph) {
-                    event = invoke(morph.inputs()[0], null, this, 50, "too long");
+                    // event = invoke(morph.inputs()[0], null, this, 50, "too long");
                 }
                 return event === message
                     || (event instanceof Array
